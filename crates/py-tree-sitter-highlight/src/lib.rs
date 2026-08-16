@@ -51,15 +51,19 @@ fn lang_name_from_module(module: &Bound<'_, PyAny>) -> PyResult<String> {
 }
 
 /// Extract the `language()` capsule from a grammar module, calling it if it is callable (the common
-/// case for modern grammar packages) or using it directly if it is already a capsule.
-fn module_language<'py>(module: &Bound<'py, PyAny>) -> PyResult<Bound<'py, PyAny>> {
-    let attr = module
-        .getattr("language")
-        .map_err(|_| PyValueError::new_err("grammar module has no `language` attribute"))?;
+/// case for modern grammar packages) or using it directly if it is already a capsule).
+///
+/// Returns `None` (rather than erroring) when the module has no usable `language`, so that
+/// `search_parsers` can silently skip such modules instead of aborting the whole call.
+fn module_language<'py>(module: &Bound<'py, PyAny>) -> PyResult<Option<Bound<'py, PyAny>>> {
+    let attr = match module.getattr("language") {
+        Ok(a) => a,
+        Err(_) => return Ok(None),
+    };
     if attr.is_callable() {
-        attr.call0()
+        Ok(Some(attr.call0()?))
     } else {
-        Ok(attr)
+        Ok(Some(attr))
     }
 }
 
@@ -111,21 +115,27 @@ fn search_parsers(
     let result = PyDict::new(py);
 
     // Positional arguments: name derived from `__name__` (minus `tree_sitter_`).
+    // Modules without a usable `language` are skipped silently.
     for module in modules.iter() {
+        let Some(language) = module_language(&module)? else {
+            continue;
+        };
         let lang = lang_name_from_module(&module)?;
         let module_dir = module_dir_of(&module)?;
         let (highlights, injections, locals) = module_queries(&module, &module_dir);
-        let language = module_language(&module)?;
         result.set_item(&lang, build_entry(py, &language, &highlights, &injections, &locals)?)?;
     }
 
-    // Keyword arguments: key is the language name.
+    // Keyword arguments: key is the language name. Modules without a usable `language` are
+    // skipped silently.
     if let Some(kwargs) = named_modules {
         for (key, module) in kwargs.iter() {
+            let Some(language) = module_language(&module)? else {
+                continue;
+            };
             let lang: String = key.extract()?;
             let module_dir = module_dir_of(&module)?;
             let (highlights, injections, locals) = module_queries(&module, &module_dir);
-            let language = module_language(&module)?;
             result
                 .set_item(&lang, build_entry(py, &language, &highlights, &injections, &locals)?)?;
         }
