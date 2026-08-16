@@ -33,7 +33,7 @@ local code = highlight {
 pretty = 'lxsh'
 ```
 
-```sh
+```bash
 luarocks install ldoc
 luarocks install texcat
 luarocks install tree-sitter-XXX
