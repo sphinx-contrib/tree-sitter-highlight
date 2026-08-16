@@ -2,47 +2,16 @@
 
 Language bindings for [tree-sitter-highlight](https://crates.io/crates/tree-sitter-highlight).
 
-## Python
-
-```python
-import tree_sitter_bash
-import tree_sitter_highlight
-import tree_sitter_python
-
-
-parsers = tree_sitter_highlight.search_parsers(
-    tree_sitter_python,
-    # same as:
-    # python=tree_sitter_python,
-    sh = tree_sitter_bash,
-)
-code = tree_sitter_highlight.highlight {
-    file = "/home/user/.bashrc",
-    source = nil,
-    language = "sh",
-    parsers = parsers,
-    theme = {"variable": {"color": "#F8F8F2"}},
-    format = "terminal",
-    layout = "document",
-    style = "classes",
-    prefix = "TS",
-    math_escape = ["comment", "string"],
-}
-```
-
-### sphinxcontrib-tree-sitter
-
-See [sphinxcontrib-tree-sitter](packages/sphinxcontrib-tree-sitter).
-
 ## Lua
 
 ```lua
-local tree_sitter_highlight = require "tree_sitter_highlight"
-local parsers = tree_sitter_highlight.search_parsers {
+local highlight = require "tree_sitter_highlight".highlight
+local search_parsers = require "tree_sitter_highlight".search_parsers
+local parsers = search_parsers {
     "/usr/lib/nvim",
     "/usr/share/nvim/runtime",
 }
-local code = tree_sitter_highlight.highlight {
+local code = highlight {
     file = "/home/user/.config/nvim/init.vim",
     source = nil,
     language = "vim",
@@ -76,3 +45,31 @@ ldoc .
 ### [texlua](https://www.luatex.org/)
 
 See [texcat](https://texrocks.readthedocs.io/en/latest/topics/texcat.md.html).
+
+## Python
+
+```python
+import tree_sitter_bash
+import tree_sitter_python
+from tree_sitter_highlight import highlight, search_parsers
+
+
+parsers = search_parsers(
+    tree_sitter_python,
+    # same as:
+    # python=tree_sitter_python,
+    sh = tree_sitter_bash,
+)
+code = highlight(
+    file = "/home/user/.bashrc",
+    source = nil,
+    language = "sh",
+    parsers = parsers,
+    theme = {"variable": {"color": "#F8F8F2"}},
+    format = "terminal",
+    layout = "document",
+    style = "classes",
+    prefix = "TS",
+    math_escape = ["comment", "string"],
+)
+```
