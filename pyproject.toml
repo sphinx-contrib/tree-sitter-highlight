@@ -14,6 +14,9 @@ homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
 [project.optional-dependencies]
 dev = [
   "pytest-cov>=7",
+  "tree-sitter-python>=0.25.0",
+]
+docs = [
   "myst-parser>=4",
   "tree-sitter-bash>=0.25",
   "tree-sitter-comment>=0.3.0",
@@ -28,7 +31,14 @@ build-backend = "maturin"
 
 [tool.cibuildwheel]
 archs = ["all"]
-skip = "*37-* *38-* *39-* *-macosx_x86*"
+# maturin failed
+# Caused by: Couldn't find any python interpreters
+# Target triple not supported by rustup: riscv64-unknown-linux-gnu
+# Target triple not supported by rustup: i686-unknown-linux-musl
+skip = "*38-* *39-* *-macosx_x86* *-macosx_universal2 *-win_arm64 *-manylinux_riscv64 *-musllinux_i686"
+# pip: command not found
+# undefined symbol: tree_sitter_python_external_scanner_create
+test-skip = "*-macosx_* cp314t-*linux_* *linux_i686 *linux_ppc64le *linux_s390x *linux_armv7l"
 build-frontend = "build[uv]"
 before-test = "pip install .[dev]"
 test-command = "pytest {project}"
