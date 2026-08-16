@@ -28,7 +28,7 @@ pub fn py_to_json(obj: &Bound<'_, PyAny>) -> serde_json::Value {
     if let Ok(items) = obj.extract::<Vec<Bound<'_, PyAny>>>() {
         return serde_json::Value::Array(items.iter().map(py_to_json).collect());
     }
-    if let Ok(dict) = obj.downcast::<pyo3::types::PyDict>() {
+    if let Ok(dict) = obj.cast::<pyo3::types::PyDict>() {
         let mut map = serde_json::Map::new();
         for (k, v) in dict.iter() {
             let key = match k.extract::<String>() {

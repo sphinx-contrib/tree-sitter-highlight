@@ -215,7 +215,7 @@ fn highlight(
     let mut core_parsers: HashMap<String, CoreParserInfo> = HashMap::new();
     for (lang_key, entry) in parsers.iter() {
         let lang: String = lang_key.extract()?;
-        let entry = match entry.downcast::<PyDict>() {
+        let entry = match entry.cast::<PyDict>() {
             Ok(e) => e,
             Err(_) => {
                 return Err(PyValueError::new_err(format!(

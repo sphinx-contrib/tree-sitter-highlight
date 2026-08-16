@@ -21,12 +21,13 @@
 //! variant without relying on the no-op behavior.
 
 use pyo3::ffi::{self as py_ffi};
-use pyo3::types::{PyCapsule, PyAnyMethods, PyCapsuleMethods};
+use pyo3::types::{PyCapsule, PyCapsuleMethods};
 use pyo3::{Bound, PyAny};
+use std::ffi::CStr;
 use tree_sitter::ffi as ts_ffi;
 
 /// The capsule name `tree_sitter` uses to tag a language pointer.
-const LANGUAGE_CAPSULE_NAME: &str = "tree_sitter.Language";
+const LANGUAGE_CAPSULE_NAME: &CStr = c"tree_sitter.Language";
 
 /// Extract a raw `TSLanguage*` from a Python object that represents a tree-sitter language.
 ///
@@ -37,8 +38,9 @@ const LANGUAGE_CAPSULE_NAME: &str = "tree_sitter.Language";
 ///
 /// Returns the raw, non-null `TSLanguage*` on success.
 fn language_ptr(obj: &Bound<'_, PyAny>) -> Result<*const ts_ffi::TSLanguage, String> {
-    // Fast path: a bare PyCapsule.
-    if let Ok(capsule) = obj.downcast::<PyCapsule>() {
+    // Fast path: a bare PyCapsule. `pointer_checked` validates the capsule name for us, so we use
+    // the `tree_sitter.Language` name and let it reject mismatched/unnamed capsules.
+    if let Ok(capsule) = obj.cast::<PyCapsule>() {
         return capsule_ptr(capsule);
     }
 
@@ -56,21 +58,14 @@ fn language_ptr(obj: &Bound<'_, PyAny>) -> Result<*const ts_ffi::TSLanguage, Str
 }
 
 /// Read the pointer out of a `tree_sitter.Language` `PyCapsule` (name `"tree_sitter.Language"`).
+///
+/// `pointer_checked` validates the capsule and its name, returning an error for unnamed / misnamed
+/// capsules; we pass the `tree_sitter.Language` name as the expected name.
 fn capsule_ptr(capsule: &Bound<'_, PyCapsule>) -> Result<*const ts_ffi::TSLanguage, String> {
-    let name = match capsule.name() {
-        Ok(Some(c)) => c.to_str().unwrap_or_default(),
-        _ => "",
-    };
-    if name != LANGUAGE_CAPSULE_NAME {
-        return Err(format!(
-            "expected a PyCapsule named '{LANGUAGE_CAPSULE_NAME}', got '{name}'"
-        ));
-    }
-    let ptr = capsule.pointer() as *const ts_ffi::TSLanguage;
-    if ptr.is_null() {
-        return Err("language capsule holds a null pointer".to_string());
-    }
-    Ok(ptr)
+    let ptr = capsule
+        .pointer_checked(Some(LANGUAGE_CAPSULE_NAME))
+        .map_err(|e| format!("language capsule is not a valid 'tree_sitter.Language' capsule: {e}"))?;
+    Ok(ptr.as_ptr() as *const ts_ffi::TSLanguage)
 }
 
 /// Build an owned Rust [`tree_sitter::Language`] from a Python language object.
