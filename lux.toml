@@ -1,0 +1,19 @@
+package = "tree-sitter-highlight"
+version = "0.0.3"
+lua = ">=5.1"
+
+[description]
+summary = "lua binding for tree-sitter-highlight"
+maintainer = "Wu"
+labels = ["highlight"]
+homepage = ""
+license = "GPL-3.0-only"
+
+[source]
+url = "https://github.com/sphinx-contrib/tree-sitter-highlight/archive/$(VERSION).zip"
+
+[build]
+type = "rust-mlua"
+
+[build.modules]
+tree_sitter_highlight = "tree_sitter_highlight"
