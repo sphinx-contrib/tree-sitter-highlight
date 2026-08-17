@@ -12,8 +12,9 @@ This project provides:
     [texcat](https://texrocks.readthedocs.io/en/latest/topics/texcat.md.html)
   - [LaTeX](https://www.latex-project.org/): also
     [texcat](https://texrocks.readthedocs.io/en/latest/topics/texcat.md.html)
+  - [pandoc](http://github.com/pandoc/pandoc): also
+    [texcat](https://texrocks.readthedocs.io/en/latest/topics/texcat.md.html)
   - [jekyll](https://github.com/jekyll/jekyll): TODO
-  - [pandoc](http://github.com/pandoc/pandoc): TODO
   - [typst](https://github.com/typst/typst): TODO
 
 ## Bench
