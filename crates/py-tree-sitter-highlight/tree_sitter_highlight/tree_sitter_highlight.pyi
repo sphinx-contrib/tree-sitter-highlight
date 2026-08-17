@@ -1,12 +1,6 @@
 from __future__ import annotations
 
-import sys
 from typing import Any, Literal, TypedDict
-
-if sys.version_info >= (3, 11):
-    from typing import NotRequired
-else:
-    from typing_extensions import NotRequired
 
 # An imported ``tree_sitter_*`` grammar package module object, e.g.
 # ``import tree_sitter_bash``. The package exposes a ``language()`` function
@@ -19,7 +13,6 @@ Layout = Literal["document", "line-numbers", "fragment"]
 Style = Literal["classes", "inline", "minimal"]
 
 __all__ = ["search_parsers", "highlight"]
-
 
 class ParserEntry(TypedDict):
     """The per-language entry stored in the ``parsers`` mapping."""
@@ -36,13 +29,11 @@ class ParserEntry(TypedDict):
     locals: str
     """The text of the language's ``locals.scm`` query (may be empty)."""
 
-
 # Mapping of language name -> ParserEntry.
 Parsers = dict[str, ParserEntry]
 
 # A theme mapping highlight scope names to ``{color, bold, italic, ...}``.
 Theme = dict[str, Any]
-
 
 def search_parsers(
     *modules: GrammarModule,
@@ -61,7 +52,6 @@ def search_parsers(
     (falling back to the ``HIGHLIGHTS_QUERY`` / ``INJECTIONS_QUERY`` /
     ``LOCALS_QUERY`` module attributes).
     """
-
 
 def highlight(
     *,

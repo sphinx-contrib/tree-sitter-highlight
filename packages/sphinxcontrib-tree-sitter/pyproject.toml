@@ -1,0 +1,36 @@
+[project]
+name = "sphinxcontrib-tree-sitter"
+version = "0.0.1"
+description = "Use tree-sitter to highlight code blocks in Sphinx"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+authors = [{ name = "Wu, Zhenyu", email = "wuzhenyu@ustc.edu" }]
+dependencies = [
+  "identify>=2",
+  "pygments>=2",
+  "tree-sitter-highlight",
+]
+
+[project.urls]
+homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
+
+[project.optional-dependencies]
+dev = [
+  "myst-parser>=4",
+  "tree-sitter-bash>=0.25",
+  "tree-sitter-comment>=0.3.0",
+  "tree-sitter-lua>=0.5.0",
+  "tree-sitter-python>=0.25.0",
+  "tree-sitter-toml>=0.7.0",
+]
+
+[build-system]
+requires = ["uv_build<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "sphinxcontrib.tree_sitter"
+
+[tool.uv.sources]
+tree-sitter-highlight = { workspace = true }

@@ -8,7 +8,7 @@ from tree_sitter_highlight import highlight, search_parsers
 
 parsers = search_parsers(
     tree_sitter_python,
-    # same as:
+    # NOTE: same as
     # python=tree_sitter_python,
     sh = tree_sitter_bash,
 )

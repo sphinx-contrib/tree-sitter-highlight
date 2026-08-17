@@ -25,7 +25,10 @@ language = "en"
 copyright = "2026-" + str(datetime.now().year)
 
 PROJECT_FILE = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)), "pyproject.toml"
+    os.path.dirname(os.path.dirname(__file__)),
+    "packages",
+    "sphinxcontrib-tree-sitter",
+    "pyproject.toml",
 )
 
 with open(PROJECT_FILE, "rb") as f:

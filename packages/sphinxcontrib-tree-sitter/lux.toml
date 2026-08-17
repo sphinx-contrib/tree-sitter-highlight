@@ -1,0 +1,14 @@
+package = "bench"
+version = "0.0.1"
+lua = ">=5.1"
+
+[description]
+summary = ""
+maintainer = "Wu"
+labels = [ "" ]
+
+[test_dependencies]
+texcat = ">=0.0.1"
+
+[build]
+type = "builtin"
