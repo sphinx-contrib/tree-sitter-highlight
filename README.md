@@ -23,29 +23,29 @@ This project provides:
 ```bash
 $ hyperfine -Nw10 'python -m sphinxcontrib.tree_sitter pyproject.toml' 'texcat pyproject.toml' 'tree-sitter highlight pyproject.toml' 'pygmentize pyproject.toml' 'bat pyproject.toml'
 Benchmark 1: python -m sphinxcontrib.tree_sitter pyproject.toml
-  Time (mean ± σ):     367.2 ms ±  25.7 ms    [User: 307.1 ms, System: 51.4 ms]
-  Range (min … max):   345.6 ms … 414.5 ms    10 runs
+  Time (mean ± σ):     397.4 ms ±  64.9 ms    [User: 338.5 ms, System: 50.8 ms]
+  Range (min … max):   335.9 ms … 503.8 ms    10 runs
 
 Benchmark 2: texcat pyproject.toml
-  Time (mean ± σ):      70.3 ms ±   3.0 ms    [User: 61.0 ms, System: 8.3 ms]
-  Range (min … max):    67.2 ms …  81.6 ms    42 runs
+  Time (mean ± σ):      1.782 s ±  0.041 s    [User: 1.174 s, System: 0.600 s]
+  Range (min … max):    1.746 s …  1.884 s    10 runs
 
 Benchmark 3: tree-sitter highlight pyproject.toml
-  Time (mean ± σ):       5.8 ms ±   0.3 ms    [User: 2.6 ms, System: 2.9 ms]
-  Range (min … max):     5.2 ms …   8.1 ms    531 runs
+  Time (mean ± σ):       6.2 ms ±   0.4 ms    [User: 2.7 ms, System: 3.1 ms]
+  Range (min … max):     5.5 ms …   8.3 ms    394 runs
 
 Benchmark 4: pygmentize pyproject.toml
-  Time (mean ± σ):     250.5 ms ±  13.3 ms    [User: 221.1 ms, System: 24.3 ms]
-  Range (min … max):   238.9 ms … 274.7 ms    10 runs
+  Time (mean ± σ):     262.4 ms ±   2.6 ms    [User: 236.6 ms, System: 23.0 ms]
+  Range (min … max):   258.9 ms … 268.5 ms    11 runs
 
 Benchmark 5: bat pyproject.toml
-  Time (mean ± σ):      15.0 ms ±   3.4 ms    [User: 11.8 ms, System: 6.6 ms]
-  Range (min … max):    11.7 ms …  29.4 ms    252 runs
+  Time (mean ± σ):      12.6 ms ±   0.6 ms    [User: 10.4 ms, System: 5.7 ms]
+  Range (min … max):    11.6 ms …  14.9 ms    223 runs
 
 Summary
   tree-sitter highlight pyproject.toml ran
-    2.60 ± 0.60 times faster than bat pyproject.toml
-   12.20 ± 0.86 times faster than texcat pyproject.toml
-   43.47 ± 3.35 times faster than pygmentize pyproject.toml
-   63.73 ± 5.71 times faster than python -m sphinxcontrib.tree_sitter pyproject.toml
+    2.04 ± 0.17 times faster than bat pyproject.toml
+   42.38 ± 2.87 times faster than pygmentize pyproject.toml
+   64.18 ± 11.32 times faster than python -m sphinxcontrib.tree_sitter pyproject.toml
+  287.79 ± 20.36 times faster than texcat pyproject.toml
 ```
