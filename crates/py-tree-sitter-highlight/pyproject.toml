@@ -35,7 +35,8 @@ archs = ["all"]
 # Target triple not supported by rustup: s390x-unknown-linux-musl
 # Target triple not supported by rustup: arm-unknown-linux-musleabihf
 # qemu-aarch64: Could not open '/lib/ld-linux-aarch64.so.1': No such file or directory
-skip = "*38-* *39-* *-macosx_x86* *-macosx_universal2 *-win_arm64 *linux_riscv64 *-musllinux_i686 *-musllinux_s390x *-musllinux_armv7l *-musllinux_aarch64 *-musllinux_x86_64"
+# qemu-ppc64le: Could not open '/lib64/ld64.so.2': No such file or directory
+skip = "*38-* *39-* *-macosx_x86* *-macosx_universal2 *-win_arm64 *linux_riscv64 *-musllinux_i686 *-musllinux_s390x *-musllinux_armv7l *-musllinux_aarch64 *-musllinux_x86_64 *-musllinux_ppc64le"
 # pip: command not found
 # undefined symbol: tree_sitter_python_external_scanner_create
 test-skip = "*-macosx_* cp314t-*linux_* *linux_i686 *linux_ppc64le *linux_s390x *linux_armv7l"
