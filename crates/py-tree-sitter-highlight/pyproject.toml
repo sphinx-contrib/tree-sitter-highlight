@@ -1,19 +1,64 @@
+[project]
+name = "tree-sitter-highlight"
+version = "0.0.1"
+description = "python binding for tree-sitter-highlight"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+authors = [{ name = "Wu, Zhenyu", email = "wuzhenyu@ustc.edu" }]
+classifiers = [
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Rust",
+]
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
+
+[project.optional-dependencies]
+dev = [
+  "pytest-cov>=7",
+  "tree-sitter-python>=0.25.0",
+]
+docs = [
+  "myst-parser>=4",
+  "tree-sitter-bash>=0.25",
+  "tree-sitter-comment>=0.3.0",
+  "tree-sitter-lua>=0.5.0",
+  "tree-sitter-python>=0.25.0",
+  "tree-sitter-toml>=0.7.0",
+]
+
 [build-system]
 requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
-[project]
-name = "tree-sitter-highlight"
-version = "0.26.12"
-description = "Python bindings for tree-sitter-highlight (syntax highlighting with Tree-sitter)"
-requires-python = ">=3.8"
-license = { text = "MIT" }
-classifiers = [
-    "Programming Language :: Rust",
-    "Programming Language :: Python :: Implementation :: CPython",
-]
+[tool.cibuildwheel]
+archs = ["all"]
+# maturin failed
+# Caused by: Couldn't find any python interpreters
+# Target triple not supported by rustup: riscv64-unknown-linux-gnu
+# Target triple not supported by rustup: riscv64-unknown-linux-musl
+# Target triple not supported by rustup: i686-unknown-linux-musl
+# Target triple not supported by rustup: s390x-unknown-linux-musl
+# No such file or directory: PosixPath('/root/.cache/puccinialin/rustup-init/rustup-init')
+# Target triple not supported by rustup: s390x-unknown-linux-musl
+# Target triple not supported by rustup: arm-unknown-linux-musleabihf
+skip = "*38-* *39-* *-macosx_x86* *-macosx_universal2 *-win_arm64 *linux_riscv64 *-musllinux_i686 *-musllinux_x86_64 *-musllinux_s390x *-musllinux_armv7l"
+# pip: command not found
+# undefined symbol: tree_sitter_python_external_scanner_create
+test-skip = "*-macosx_* cp314t-*linux_* *linux_i686 *linux_ppc64le *linux_s390x *linux_armv7l"
+build-frontend = "build[uv]"
+before-test = "pip install .[dev]"
+test-command = "pytest {project}"
+
+# https://github.com/astral-sh/uv/issues/10260
+[[tool.cibuildwheel.overrides]]
+select = ["*-musllinux_s390x", "*-musllinux_ppc64*", "*-musllinux_riscv64"]
+build-frontend = "build"
 
 [tool.maturin]
+features = ["pyo3/abi3-py38", "pyo3/extension-module"]
 manifest-path = "Cargo.toml"
 module-name = "tree_sitter_highlight"
-features = ["pyo3/abi3-py38", "pyo3/extension-module"]
+python-packages = ["tree_sitter_highlight"]
