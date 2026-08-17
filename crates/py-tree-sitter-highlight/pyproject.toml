@@ -4,7 +4,7 @@ version = "0.0.1"
 description = "python binding for tree-sitter-highlight"
 readme = "README.md"
 requires-python = ">=3.10"
-license = "GPL-3.0-only"
+license = "GPL-3.0-or-later"
 authors = [{ name = "Wu, Zhenyu", email = "wuzhenyu@ustc.edu" }]
 classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
@@ -41,16 +41,15 @@ archs = ["all"]
 # Target triple not supported by rustup: riscv64-unknown-linux-musl
 # Target triple not supported by rustup: i686-unknown-linux-musl
 # Target triple not supported by rustup: s390x-unknown-linux-musl
-# No such file or directory: PosixPath('/root/.cache/puccinialin/rustup-init/rustup-init')
-# Target triple not supported by rustup: s390x-unknown-linux-musl
 # Target triple not supported by rustup: arm-unknown-linux-musleabihf
-skip = "*38-* *39-* *-macosx_x86* *-macosx_universal2 *-win_arm64 *linux_riscv64 *-musllinux_i686 *-musllinux_x86_64 *-musllinux_s390x *-musllinux_armv7l"
+# qemu-aarch64: Could not open '/lib/ld-linux-aarch64.so.1': No such file or directory
+skip = "*38-* *39-* *-macosx_x86* *-macosx_universal2 *-win_arm64 *linux_riscv64 *-musllinux_i686 *-musllinux_s390x *-musllinux_armv7l *-musllinux_aarch64 *-musllinux_x86_64"
 # pip: command not found
 # undefined symbol: tree_sitter_python_external_scanner_create
 test-skip = "*-macosx_* cp314t-*linux_* *linux_i686 *linux_ppc64le *linux_s390x *linux_armv7l"
 build-frontend = "build[uv]"
-before-test = "pip install .[dev]"
-test-command = "pytest {project}"
+before-test = "pip install crates/py-tree-sitter-highlight[dev]"
+test-command = "pytest {project}/crates/py-tree-sitter-highlight"
 
 # https://github.com/astral-sh/uv/issues/10260
 [[tool.cibuildwheel.overrides]]

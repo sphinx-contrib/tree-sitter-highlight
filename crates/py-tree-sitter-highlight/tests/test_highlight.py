@@ -10,6 +10,9 @@ class Test:
     @staticmethod
     def test_highlight() -> None:
         parsers = search_parsers(tree_sitter_python)
+        assert isinstance(
+            parsers["python"]["language"], type(tree_sitter_python.language())
+        )
         code = highlight(
             file=__file__,
             language="python",

@@ -44,5 +44,5 @@ cache-keys = [
 [tool.uv.workspace]
 members = [
   "crates/py-tree-sitter-highlight",
-  "packages/sphinxcontrib-tree-sitter",
+  "packages/*",
 ]

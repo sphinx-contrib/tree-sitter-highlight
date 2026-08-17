@@ -10,7 +10,8 @@ else:
 
 # An imported ``tree_sitter_*`` grammar package module object, e.g.
 # ``import tree_sitter_bash``. The package exposes a ``language()`` function
-# returning a PyCapsule plus on-disk query files; this binding reads both.
+# returning a pointer (as an ``int``) plus on-disk query files; this binding
+# reads both.
 GrammarModule = Any
 
 HighlightFormat = Literal["terminal", "html", "latex"]
@@ -23,8 +24,8 @@ __all__ = ["search_parsers", "highlight"]
 class ParserEntry(TypedDict):
     """The per-language entry stored in the ``parsers`` mapping."""
 
-    language: Any
-    """A ``tree_sitter.Language`` capsule produced by a grammar package."""
+    language: int
+    """The grammar's ``language()`` value — the raw ``TSLanguage*`` address."""
 
     highlights: str
     """The text of the language's ``highlights.scm`` query."""
@@ -55,10 +56,10 @@ def search_parsers(
     name to its grammar module.
 
     Returns a :data:`Parsers` mapping where each value's ``language`` is the
-    grammar's ``language()`` capsule and the three query strings are read from
-    the package's ``queries/`` directory (falling back to the
-    ``HIGHLIGHTS_QUERY`` / ``INJECTIONS_QUERY`` / ``LOCALS_QUERY`` module
-    attributes).
+    grammar's ``language()`` value (the raw ``TSLanguage*`` pointer address) and
+    the three query strings are read from the package's ``queries/`` directory
+    (falling back to the ``HIGHLIGHTS_QUERY`` / ``INJECTIONS_QUERY`` /
+    ``LOCALS_QUERY`` module attributes).
     """
 
 

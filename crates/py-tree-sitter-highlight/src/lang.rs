@@ -21,7 +21,7 @@
 //! variant without relying on the no-op behavior.
 
 use pyo3::ffi::{self as py_ffi};
-use pyo3::types::{PyCapsule, PyCapsuleMethods};
+use pyo3::types::{PyAnyMethods, PyCapsule, PyCapsuleMethods};
 use pyo3::{Bound, PyAny};
 use std::ffi::CStr;
 use tree_sitter::ffi as ts_ffi;
@@ -70,9 +70,31 @@ fn capsule_ptr(capsule: &Bound<'_, PyCapsule>) -> Result<*const ts_ffi::TSLangua
 
 /// Build an owned Rust [`tree_sitter::Language`] from a Python language object.
 ///
-/// The grammar's `TSLanguage` is static, so we copy it (no-op for native grammars) before wrapping,
-/// guaranteeing `Drop` never frees the grammar's memory regardless of which backend produced it.
+/// Accepts any of the shapes a grammar package's `language()` may produce:
+/// * an `int` holding the raw `TSLanguage*` address (the common case for grammars that
+///   expose the pointer directly),
+/// * a `PyCapsule` tagged `"tree_sitter.Language"` (the value returned by some grammar
+///   packages' `language()`), or
+/// * a `tree_sitter.Language` *instance* (which wraps such a capsule).
+///
+/// The grammar's `TSLanguage` is static, so we copy it (no-op for native grammars) before
+/// wrapping, guaranteeing `Drop` never frees the grammar's memory regardless of which backend
+/// produced it.
 pub fn extract_language(obj: &Bound<'_, PyAny>) -> Result<tree_sitter::Language, String> {
+    // Int pointer: the grammar package exposes `language()` as a raw `TSLanguage*` address.
+    if let Ok(addr) = obj.extract::<usize>() {
+        let raw = addr as *const ts_ffi::TSLanguage;
+        if raw.is_null() {
+            return Err("language pointer (int) is null".to_string());
+        }
+        // `ts_language_copy` retains (WASM) or is a no-op (native) and returns the same pointer.
+        let copied = unsafe { ts_ffi::ts_language_copy(raw) };
+        // `Language` is a newtype around `*const TSLanguage`; its single field has identical layout.
+        let language =
+            unsafe { std::mem::transmute::<*const ts_ffi::TSLanguage, tree_sitter::Language>(copied) };
+        return Ok(language);
+    }
+
     let raw = language_ptr(obj)?;
     // `ts_language_copy` retains (WASM) or is a no-op (native) and returns the same pointer.
     let copied = unsafe { ts_ffi::ts_language_copy(raw) };

@@ -6,21 +6,21 @@
 //!   grammar package (e.g. the `tree_sitter_bash` module object). For positional arguments the
 //!   language name is derived by stripping the `tree_sitter_` prefix from the module's `__name__`;
 //!   for keyword arguments the key is the language name. Returns a dict
-//!   `{ lang: { "language": <capsule>, "highlights": str, "injections": str, "locals": str } }`
-//!   where `language` is the grammar's `language()` capsule and the query strings are read from the
-//!   package's `queries/` directory (falling back to the `HIGHLIGHTS_QUERY` / `INJECTIONS_QUERY` /
-//!   `LOCALS_QUERY` module attributes).
+//!   `{ lang: { "language": int, "highlights": str, "injections": str, "locals": str } }` where
+//!   `language` is the grammar's `language()` value — the raw `TSLanguage*` address as an `int` —
+//!   and the query strings are read from the package's `queries/` directory (falling back to the
+//!   `HIGHLIGHTS_QUERY` / `INJECTIONS_QUERY` / `LOCALS_QUERY` module attributes).
 //! * `highlight(*, source=None, file=None, language, parsers, theme=None, format="terminal",
 //!   layout="document", style="classes", prefix="TS", math_escape=None)` — performs syntax
 //!   highlighting and returns the rendered document as a string. `parsers` uses the same shape as
-//!   `search_parsers`'s return value: `{ lang: { "language": <capsule>, "highlights": str, ... } }`.
+//!   `search_parsers`'s return value: `{ lang: { "language": int, "highlights": str, ... } }`.
 
 use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::types::{PyDict, PyDictMethods, PyTuple};
+use pyo3::types::{PyAnyMethods, PyDict, PyDictMethods, PyTuple};
 
 use highlight_core::render::{RenderTheme, parse_theme};
 use highlight_core::{CoreParserInfo, resolve_math_escape, run_highlight};
@@ -136,8 +136,7 @@ fn search_parsers(
             let lang: String = key.extract()?;
             let module_dir = module_dir_of(&module)?;
             let (highlights, injections, locals) = module_queries(&module, &module_dir);
-            result
-                .set_item(&lang, build_entry(py, &language, &highlights, &injections, &locals)?)?;
+            result.set_item(&lang, build_entry(py, &language, &highlights, &injections, &locals)?)?;
         }
     }
 
@@ -145,6 +144,10 @@ fn search_parsers(
 }
 
 /// Build the `{ "language", "highlights", "injections", "locals" }` entry dict for one language.
+///
+/// `language` is the grammar package's `language()` value — the raw `TSLanguage*` address as an
+/// `int` (or a capsule / `tree_sitter.Language` on other backends); `extract_language` accepts all
+/// three shapes. The three query strings come from `module_queries`.
 fn build_entry(
     py: Python<'_>,
     language: &Bound<'_, PyAny>,
@@ -221,7 +224,9 @@ fn highlight(
         }
     };
 
-    // Build the core language registry from the `parsers` dict.
+    // Build the core language registry from the `parsers` mapping. Each value is a parser entry
+    // dict with keys `language`, `highlights`, `injections` and `locals` (matching the shape
+    // `search_parsers` returns).
     let mut core_parsers: HashMap<String, CoreParserInfo> = HashMap::new();
     for (lang_key, entry) in parsers.iter() {
         let lang: String = lang_key.extract()?;
