@@ -18,6 +18,7 @@ homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
 [project.optional-dependencies]
 dev = [
   "myst-parser>=4",
+  "pytest-cov>=7.1.0",
   "tree-sitter-bash>=0.25",
   "tree-sitter-comment>=0.3.0",
   "tree-sitter-lua>=0.5.0",
