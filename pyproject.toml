@@ -5,11 +5,11 @@ exclude_lines = [
   "\\s*import tomli as tomllib",
 ]
 
-[tool.mdformat]
-number = true
-
 [tool.doq]
 template_path = "templates"
+
+[tool.mdformat]
+number = true
 
 [tool.ruff]
 line-length = 79
