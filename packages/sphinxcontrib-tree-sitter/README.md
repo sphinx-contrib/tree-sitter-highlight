@@ -30,14 +30,14 @@ extensions = [
 ```toml
 # ...
 [project.optional-dependencies]
-dev = [
+docs = [
   "sphinx",
   "tree-sitter-XXX",
 ]
 ```
 
 ```bash
-uv sync
+uv sync --extra=docs
 source .venv/bin/activate
 sphinx-build docs _readthedocs/html
 xdg-open _readthedocs/html/index.html

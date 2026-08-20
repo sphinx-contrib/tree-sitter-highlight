@@ -12,6 +12,15 @@ resources/*
 ```{toctree}
 ---
 hidden:
+glob:
+caption: API
+---
+api/*
+```
+
+```{toctree}
+---
+hidden:
 caption: Index
 ---
 genindex

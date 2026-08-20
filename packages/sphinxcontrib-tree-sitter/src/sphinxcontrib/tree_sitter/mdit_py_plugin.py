@@ -33,6 +33,12 @@ def tree_sitter_plugin(md: Any, **options: Any) -> None:
 
     which overrides the plugin-level default passed to ``.use`` (itself
     defaulting to ``None``, i.e. the host tree-sitter config theme).
+
+    :param md:
+    :type md: Any
+    :param options:
+    :type options: Any
+    :rtype: None
     """
     from .highlighting import TreeSitterBridge
 

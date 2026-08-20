@@ -12,7 +12,11 @@ from .highlighting import TreeSitterBridge
 
 
 def get_parser(parsers) -> ArgumentParser:
-    r"""Get a parser for unit test."""
+    r"""Get a parser for unit test.
+
+    :param parsers:
+    :rtype: ArgumentParser
+    """
     parser = ArgumentParser()
     parser.add_argument("--version", version=__version__, action="version")
 
@@ -64,7 +68,10 @@ def get_parser(parsers) -> ArgumentParser:
 
 
 def main() -> None:
-    r"""Parse arguments and provide shell completions."""
+    r"""Parse arguments and provide shell completions.
+
+    :rtype: None
+    """
     parsers = TreeSitterBridge.get_parsers()
     parser = get_parser(parsers)
     args = parser.parse_args()

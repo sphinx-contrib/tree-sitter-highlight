@@ -49,6 +49,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "myst_parser",
     "sphinxcontrib.tree_sitter",
+    "sphinxcontrib.autofile",
 ]
 
 myst_heading_anchors = 3

@@ -8,6 +8,9 @@ exclude_lines = [
 [tool.mdformat]
 number = true
 
+[tool.doq]
+template_path = "templates"
+
 [tool.ruff]
 line-length = 79
 

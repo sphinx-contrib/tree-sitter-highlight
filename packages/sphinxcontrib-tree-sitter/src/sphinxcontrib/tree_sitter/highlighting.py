@@ -71,7 +71,13 @@ class TreeSitterBridge(PygmentsBridge):
 
     @classmethod
     def from_bride(cls, bridge: PygmentsBridge) -> "TreeSitterBridge":
-        """Create a TreeSitterBridge from an existing PygmentsBridge."""
+        """Create a TreeSitterBridge from an existing PygmentsBridge.
+
+        :param cls:
+        :param bridge:
+        :type bridge: PygmentsBridge
+        :rtype: TreeSitterBridge
+        """
         return cls(
             bridge.dest,
             bridge.formatter_args.get("style", "sphinx"),
@@ -80,6 +86,10 @@ class TreeSitterBridge(PygmentsBridge):
 
     @staticmethod
     def get_parsers() -> dict[str, Any]:
+        """Get parsers.
+
+        :rtype: dict[str, Any]
+        """
         modules = [
             __import__(name)
             for _, name, _ in pkgutil.iter_modules()
@@ -116,7 +126,13 @@ class TreeSitterBridge(PygmentsBridge):
 
     @classmethod
     def get_theme(cls, style: "Style") -> dict[str, Any]:
-        r"""Tree sitter doesn't support background and border colors."""
+        r"""Tree sitter doesn't support background and border colors.
+
+        :param cls:
+        :param style:
+        :type style: "Style"
+        :rtype: dict[str, Any]
+        """
         theme = {}
         for scope, token_type in cls.scopes.items():
             if not isinstance(token_type, _TokenType):
@@ -151,6 +167,23 @@ class TreeSitterBridge(PygmentsBridge):
         location: Any = None,
         **kwargs: Any,
     ) -> str:
+        r"""Highlight block.
+
+        :param self:
+        :param source:
+        :type source: str
+        :param lang:
+        :type lang: str
+        :param opts:
+        :type opts: dict[str, Any] | None
+        :param force:
+        :type force: bool
+        :param location:
+        :type location: Any
+        :param kwargs:
+        :type kwargs: Any
+        :rtype: str
+        """
         format: str = self.dest
         prefix: str = self.formatter_args.get("commandprefix", "TS")
         style: Style = self.formatter_args["style"]
@@ -180,6 +213,11 @@ class TreeSitterBridge(PygmentsBridge):
         return hlsource
 
     def get_stylesheet(self) -> str:
+        r"""Get stylesheet.
+
+        :param self:
+        :rtype: str
+        """
         if self.dest == "html":
             return ""
         parsers = TreeSitterBridge.get_parsers()
