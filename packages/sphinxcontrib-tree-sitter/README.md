@@ -2,11 +2,16 @@
 
 Use tree-sitter to highlight code blocks.
 
+## Examples
+
+- [lsp-tree-sitter](https://lsp-tree-sitter.readthedocs.io/)
+- This website itself.
+
 ## Usage
 
 ### CLI
 
-```sh
+```bash
 python -m sphinxcontrib.tree_sitter /the/path/of/a/file
 ```
 
@@ -40,7 +45,7 @@ xdg-open _readthedocs/html/index.html
 
 ### markdown-it-py
 
-```python
+``````python
 from markdown_it import MarkdownIt
 from sphinxcontrib.tree_sitter.mdit_py_plugin import tree_sitter_plugin
 
@@ -51,4 +56,4 @@ def f():
     print("Hello")
 ```
 """)
-```
+``````

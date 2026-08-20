@@ -3,6 +3,15 @@
 ```{toctree}
 ---
 hidden:
+glob:
+caption: resources
+---
+resources/*
+```
+
+```{toctree}
+---
+hidden:
 caption: Index
 ---
 genindex
@@ -16,8 +25,8 @@ search
 ```{include} ../crates/py-tree-sitter-highlight/README.md
 ```
 
-```{include} ../packages/sphinxcontrib-tree-sitter/README.md
+```{include} ../crates/lua-tree-sitter-highlight/README.md
 ```
 
-```{include} ../crates/lua-tree-sitter-highlight/README.md
+```{include} ../packages/sphinxcontrib-tree-sitter/README.md
 ```
