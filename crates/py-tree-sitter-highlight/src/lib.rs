@@ -32,9 +32,11 @@ mod theme;
 ///
 /// Missing files yield an empty string so a language that ships only `highlights.scm`, for
 /// example, still works.
-fn read_query_file(module_dir: &std::path::Path, name: &str) -> String {
-    let path = module_dir.join("queries").join(name);
-    std::fs::read_to_string(&path).unwrap_or_default()
+fn read_query_file(module_dir: &std::path::Path, name: &str, lang: &str) -> String {
+    let path = module_dir.join("queries");
+    std::fs::read_to_string(path.join(name))
+        .or_else(|_| std::fs::read_to_string(path.join(lang).join(name)))
+        .unwrap_or_default()
 }
 
 /// Derive the language name from a grammar module's `__name__` by stripping the `tree_sitter_`
@@ -73,10 +75,11 @@ fn module_language<'py>(module: &Bound<'py, PyAny>) -> PyResult<Option<Bound<'py
 fn module_queries(
     module: &Bound<'_, PyAny>,
     module_dir: &std::path::Path,
+    lang: &str,
 ) -> (String, String, String) {
-    let highlights = read_query_file(module_dir, "highlights.scm");
-    let injections = read_query_file(module_dir, "injections.scm");
-    let locals = read_query_file(module_dir, "locals.scm");
+    let highlights = read_query_file(module_dir, "highlights.scm", lang);
+    let injections = read_query_file(module_dir, "injections.scm", lang);
+    let locals = read_query_file(module_dir, "locals.scm", lang);
 
     // Fall back to module attributes when the on-disk file is absent.
     let get_attr = |module: &Bound<'_, PyAny>, attr: &str| -> String {
@@ -122,8 +125,11 @@ fn search_parsers(
         };
         let lang = lang_name_from_module(&module)?;
         let module_dir = module_dir_of(&module)?;
-        let (highlights, injections, locals) = module_queries(&module, &module_dir);
-        result.set_item(&lang, build_entry(py, &language, &highlights, &injections, &locals)?)?;
+        let (highlights, injections, locals) = module_queries(&module, &module_dir, &lang);
+        result.set_item(
+            &lang,
+            build_entry(py, &language, &highlights, &injections, &locals)?,
+        )?;
     }
 
     // Keyword arguments: key is the language name. Modules without a usable `language` are
@@ -135,8 +141,11 @@ fn search_parsers(
             };
             let lang: String = key.extract()?;
             let module_dir = module_dir_of(&module)?;
-            let (highlights, injections, locals) = module_queries(&module, &module_dir);
-            result.set_item(&lang, build_entry(py, &language, &highlights, &injections, &locals)?)?;
+            let (highlights, injections, locals) = module_queries(&module, &module_dir, &lang);
+            result.set_item(
+                &lang,
+                build_entry(py, &language, &highlights, &injections, &locals)?,
+            )?;
         }
     }
 
@@ -208,9 +217,8 @@ fn highlight(
     let source = if let Some(s) = source {
         s
     } else {
-        let file = file.ok_or_else(|| {
-            PyValueError::new_err("`source` or `file` is required for highlight")
-        })?;
+        let file = file
+            .ok_or_else(|| PyValueError::new_err("`source` or `file` is required for highlight"))?;
         if file == "-" {
             use std::io::Read as _;
             let mut buf = String::new();
@@ -235,7 +243,7 @@ fn highlight(
             Err(_) => {
                 return Err(PyValueError::new_err(format!(
                     "parsers['{lang}'] must be a dict {{ 'language', 'highlights', 'injections', 'locals' }}"
-                )))
+                )));
             }
         };
         let language_obj = match entry.get_item("language")? {
@@ -243,7 +251,7 @@ fn highlight(
             None => {
                 return Err(PyValueError::new_err(format!(
                     "parsers['{lang}'] missing 'language'"
-                )))
+                )));
             }
         };
         let ts_language = lang::extract_language(&language_obj).map_err(PyValueError::new_err)?;
@@ -273,8 +281,7 @@ fn highlight(
 
     let theme: RenderTheme = match theme {
         Some(t) if !t.is_none() => parse_theme(&theme::py_to_json(t)),
-        _ => highlight_core::load_default_theme()
-            .map_err(PyValueError::new_err)?,
+        _ => highlight_core::load_default_theme().map_err(PyValueError::new_err)?,
     };
 
     let format = highlight_core::parse_format(format).map_err(PyValueError::new_err)?;

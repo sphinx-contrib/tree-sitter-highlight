@@ -154,17 +154,19 @@ class TreeSitterBridge(PygmentsBridge):
         style: Style = self.formatter_args["style"]
         theme = TreeSitterBridge.get_theme(style)
         parsers = TreeSitterBridge.get_parsers()
-        hlsource = highlight(
-            source=source,
-            language=lang,
-            parsers=parsers,
-            theme=theme,
-            format=format,  # ty:ignore[invalid-argument-type]
-            layout="fragment",
-            style="inline" if format == "html" else "classes",
-            prefix=prefix,
-            math_escape=[],
-        )
+        hlsource = source
+        if source in parsers:
+            hlsource = highlight(
+                source=source,
+                language=lang,
+                parsers=parsers,
+                theme=theme,
+                format=format,  # ty:ignore[invalid-argument-type]
+                layout="fragment",
+                style="inline" if format == "html" else "classes",
+                prefix=prefix,
+                math_escape=[],
+            )
         if format != "html":
             hlsource = texescape.hlescape(hlsource, self.latex_engine)
         return hlsource
