@@ -2,6 +2,7 @@ import pkgutil
 import re
 from typing import Any
 
+from pygments import highlight as pygmentize
 from pygments.style import Style
 from pygments.token import (
     Comment,
@@ -23,6 +24,7 @@ from tree_sitter_highlight import highlight, search_parsers
 class TreeSitterBridge(PygmentsBridge):
     """A bridge for using Tree-sitter for syntax highlighting in Sphinx."""
 
+    languages: list[str] = ["default"]
     scopes: dict[str, _TokenType | dict] = {
         "whitespace": Whitespace,
         "comment": Comment,
@@ -154,8 +156,7 @@ class TreeSitterBridge(PygmentsBridge):
         style: Style = self.formatter_args["style"]
         theme = TreeSitterBridge.get_theme(style)
         parsers = TreeSitterBridge.get_parsers()
-        hlsource = source
-        if source in parsers:
+        if lang in parsers:
             hlsource = highlight(
                 source=source,
                 language=lang,
@@ -167,6 +168,13 @@ class TreeSitterBridge(PygmentsBridge):
                 prefix=prefix,
                 math_escape=[],
             )
+        else:
+            if lang not in TreeSitterBridge.languages:
+                TreeSitterBridge.languages += [lang]
+                print(f"tree sitter parser for language '{lang}' not found.")
+            lexer = self.get_lexer(source, "none", opts, force, location)
+            formatter = self.get_formatter(**kwargs)
+            hlsource = pygmentize(source, lexer, formatter)
         if format != "html":
             hlsource = texescape.hlescape(hlsource, self.latex_engine)
         return hlsource
