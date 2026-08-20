@@ -1,6 +1,6 @@
 [project]
 name = "sphinxcontrib-tree-sitter"
-version = "0.0.1"
+version = "0.0.2"
 description = "Use tree-sitter to highlight code blocks in Sphinx"
 readme = "README.md"
 requires-python = ">=3.10"
