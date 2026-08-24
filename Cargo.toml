@@ -1,14 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-  "crates/highlight",
-  "crates/highlight-core",
-  "crates/lua-tree-sitter-highlight",
-  "crates/py-tree-sitter-highlight",
+  "crates/*",
 ]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.0.2"
 authors = ["Tree-sitter contributors"]
 edition = "2024"
 rust-version = "1.90"
@@ -31,6 +28,13 @@ tree-sitter-loader = "0.26.12"
 ansi_colours = "1.2.3"
 anstyle = "1.0.14"
 mlua = { version = "0.11", features = ["module"] }
+napi = {
+  version = "2",
+  default-features = false,
+  features = ["napi4", "serde-json"]
+}
+napi-derive = "2"
+napi-sys = "2"
 regex = "1.12.3"
 serde_json = { version = "1.0.150", features = ["preserve_order"] }
 streaming-iterator = "0.1.9"

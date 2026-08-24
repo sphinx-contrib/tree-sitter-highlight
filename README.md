@@ -5,7 +5,7 @@ This project provides:
 - Language bindings for [tree-sitter-highlight](https://crates.io/crates/tree-sitter-highlight).
   - [python](crates/py-tree-sitter-highlight)
   - [lua](crates/lua-tree-sitter-highlight)
-  - [nodejs](crates/js-tree-sitter-highlight): TODO
+  - [nodejs](crates/nodejs-tree-sitter-highlight)
 - Some packages to use tree-sitter to highlight
   - [sphinx](https://github.com/sphinx-doc/sphinx):
     [sphinxcontrib-tree-sitter](packages/sphinxcontrib-tree-sitter)
