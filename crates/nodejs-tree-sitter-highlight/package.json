@@ -1,0 +1,33 @@
+{
+  "name": "tree-sitter-highlight",
+  "version": "0.0.1",
+  "description": "Syntax highlighting with Tree-sitter (Node.js binding)",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "GPL-3.0-only",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "prebuilds/**/*.node"
+  ],
+  "scripts": {
+    "build": "napi build --release --cargo-name tree_sitter_highlight",
+    "build:debug": "napi build --cargo-name tree_sitter_highlight",
+    "prebuildify": "scripts/prebuildify-copy.mjs",
+    "test": "tests/test_highlight.mjs"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3",
+    "prebuildify": "^6.0.1",
+    "tree-sitter-python": "^0.25.0"
+  },
+  "dependencies": {
+    "node-gyp-build": "^4.8.4"
+  },
+  "napi": {
+    "binaryName": "tree_sitter_highlight"
+  },
+  "keywords": ["tree sitter"],
+  "author": "Wu",
+  "type": "commonjs"
+}

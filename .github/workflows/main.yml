@@ -8,7 +8,6 @@
       - "**.md"
   workflow_dispatch:
 
-# https://github.com/softprops/action-gh-release/issues/236
 permissions:
   contents: write
   id-token: write
@@ -40,6 +39,39 @@ jobs:
           path: |
             wheelhouse/*.whl
 
+  build-napi-prebuilds:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            dest: linux-x64
+          - runs-on: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            dest: linux-arm64
+          - runs-on: macos-latest
+            target: x86_64-apple-darwin
+            dest: darwin-x64
+          - runs-on: macos-latest
+            target: aarch64-apple-darwin
+            dest: darwin-arm64
+          - runs-on: windows-latest
+            target: x86_64-pc-windows-msvc
+            dest: win32-x64
+    runs-on: ${{matrix.runs-on}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - name: Build prebuild
+        run: |
+          rustup target add ${{matrix.target}}
+          npm run prebuildify
+      - uses: actions/upload-artifact@v5
+        with:
+          name: npm-prebuild-${{matrix.dest}}
+          path: prebuilds
+
   build:
     needs:
       - build-wheels-and-test
@@ -64,9 +96,35 @@ jobs:
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: |
-            ${{env.files}}
+          files: ${{env.files}}
       - uses: pypa/gh-action-pypi-publish@release/v1
         if: startsWith(github.ref, 'refs/tags/')
+
+  publish-npm:
+    needs:
+      - build-napi-prebuilds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v4
         with:
-          password: ${{secrets.PYPI_API_TOKEN}}
+          pattern: npm-prebuild-*
+          merge-multiple: true
+          path: prebuilds
+      - uses: actions/upload-artifact@v5
+        if: "! startsWith(github.ref, 'refs/tags/')"
+        with:
+          name: artifact-prebuild
+          path: |
+            prebuilds
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            prebuilds
+      - name: Publish to npm
+        if: startsWith(github.ref, 'refs/tags/')
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
