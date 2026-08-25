@@ -1,5 +1,5 @@
 {
-  "name": "tree-sitter-highlight",
+  "name": "nodejs-tree-sitter-highlight",
   "version": "0.0.1",
   "description": "Syntax highlighting with Tree-sitter (Node.js binding)",
   "main": "index.js",

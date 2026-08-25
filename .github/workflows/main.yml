@@ -127,5 +127,3 @@ jobs:
       - name: Publish to npm
         if: startsWith(github.ref, 'refs/tags/')
         run: npm publish -w tree-sitter-highlight
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
