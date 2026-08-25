@@ -30,5 +30,7 @@ mkShell {
         tree-sitter-python
       ]
     ))
+
+    hexo-cli
   ];
 }

@@ -1,6 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "crates/nodejs-tree-sitter-highlight"
+    "crates/nodejs-tree-sitter-highlight",
+    "projects/*"
   ]
 }

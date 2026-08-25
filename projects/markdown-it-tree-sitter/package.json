@@ -1,0 +1,30 @@
+{
+  "name": "markdown-it-tree-sitter",
+  "version": "0.0.0",
+  "description": "A markdown-it plugin that highlights code fences with tree-sitter-highlight, auto-discovering tree-sitter-* grammars from node_modules.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "markdown-it",
+    "markdown-it-plugin",
+    "tree-sitter",
+    "syntax-highlighting"
+  ],
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "dependencies": {
+    "nodejs-tree-sitter-highlight": "file:../../crates/nodejs-tree-sitter-highlight"
+  },
+  "peerDependencies": {
+    "markdown-it": "^13.0.0 || ^14.0.0"
+  },
+  "devDependencies": {
+    "markdown-it": "^14.1.0"
+  }
+}

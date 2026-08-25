@@ -15,6 +15,7 @@ This project provides:
     [texcat](https://texrocks.readthedocs.io/en/latest/topics/texcat.md.html)
   - [LaTeX](https://www.latex-project.org/):
     [texcat](https://texrocks.readthedocs.io/en/latest/topics/texcat.md.html)
-  - [hexo](https://github.com/hexojs/hexo): TODO
+  - [hexo](https://github.com/hexojs/hexo):
+    [markdown-it-tree-sitter](projects/markdown-it-tree-sitter)
   - [jekyll](https://github.com/jekyll/jekyll): TODO
   - [typst](https://github.com/typst/typst): TODO
