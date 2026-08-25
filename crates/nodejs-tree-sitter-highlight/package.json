@@ -13,8 +13,8 @@
   "scripts": {
     "build": "napi build --release --cargo-name tree_sitter_highlight",
     "build:debug": "napi build --cargo-name tree_sitter_highlight",
-    "prebuildify": "scripts/prebuildify-copy.mjs",
-    "test": "tests/test_highlight.mjs"
+    "prebuildify": "node scripts/prebuildify-copy.mjs",
+    "test": "node tests/test_highlight.mjs"
   },
   "devDependencies": {
     "@napi-rs/cli": "^3",
