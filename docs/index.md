@@ -34,8 +34,8 @@ search
 ```{include} ../crates/py-tree-sitter-highlight/README.md
 ```
 
-```{include} ../crates/lua-tree-sitter-highlight/README.md
+```{include} ../crates/nodejs-tree-sitter-highlight/README.md
 ```
 
-```{include} ../packages/sphinxcontrib-tree-sitter/README.md
+```{include} ../crates/lua-tree-sitter-highlight/README.md
 ```

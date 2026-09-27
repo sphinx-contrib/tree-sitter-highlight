@@ -1,6 +1,6 @@
 # sphinxcontrib-tree-sitter
 
-```{autofile} ../../packages/sphinxcontrib-tree-sitter/src/*/*.py
+```{autofile} ../../packages/python/sphinxcontrib-tree-sitter/src/*/*.py
 ---
 members:
 ---

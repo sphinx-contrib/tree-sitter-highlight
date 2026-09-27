@@ -1,5 +1,5 @@
 package = "pancat"
-version = "0.3.20"
+version = "0.3.16"
 lua = ">=5.1"
 
 [description]
@@ -7,15 +7,15 @@ summary = "syntax highlight code in pandoc"
 detailed = "A reimplementation of https://github.com/jgm/skylighting by tree-sitter"
 maintainer = "Wu"
 labels = ["tex"]
-homepage = "https://texrocks.readthedocs.io/en/latest/topics/pancat.md.html"
+homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
 license = "GPL-3.0"
 
 [source]
-url = "https://github.com/ustctug/texrocks/archive/$(VERSION).zip"
-dir = "texrocks-$(VERSION)/packages/$(PACKAGE)"
+url = "https://github.com/sphinx-contrib/tree-sitter-highlight/archive/$(VERSION).zip"
+dir = "tree-sitter-highlight-$(VERSION)/packages/$(PACKAGE)"
 
 [dependencies]
-texcat = ">=0.3.20"
+texcat = ">=0.3.16"
 
 [run]
 type = "command"
