@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
+homepage = "https://tree-sitter-highlight.readthedocs.io/en/latest/resources/python.html"
 
 [project.optional-dependencies]
 dev = [
@@ -29,6 +29,13 @@ docs = [
   "tree-sitter-lua>=0.5.0",
   "tree-sitter-python>=0.25.0",
   "tree-sitter-toml>=0.7.0",
+  "tree-sitter-bash>=0.25",
+  # https://github.com/tree-sitter-grammars/tree-sitter-vim/issues/65
+  # "tree-sitter-vim",
+  # https://github.com/tree-sitter-grammars/tree-sitter-commonlisp/issues/54
+  # "tree-sitter-commonlisp",
+  # miss queries
+  # "tree-sitter-markdown",
 ]
 
 [build-system]

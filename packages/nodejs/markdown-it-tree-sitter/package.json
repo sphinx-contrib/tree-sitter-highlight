@@ -2,6 +2,7 @@
   "name": "markdown-it-tree-sitter",
   "version": "0.0.0",
   "description": "A markdown-it plugin that highlights code fences with tree-sitter-highlight, auto-discovering tree-sitter-* grammars from node_modules.",
+  "homepage": "https://tree-sitter-highlight.readthedocs.io/en/latest/resources/nodejs.html",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",

@@ -7,7 +7,7 @@ summary = "syntax highlight code in pandoc"
 detailed = "A reimplementation of https://github.com/jgm/skylighting by tree-sitter"
 maintainer = "Wu"
 labels = ["tex"]
-homepage = "https://tree-sitter-highlight.readthedocs.io/en/latest/resources/lua.html"
+homepage = "https://tree-sitter-highlight.readthedocs.io/en/latest/resources/pancat.html"
 license = "GPL-3.0"
 
 [source]
