@@ -67,7 +67,7 @@ jobs:
         run: |
           rustup target add ${{matrix.target}}
           bun install
-          bun -Ftree-sitter-highlight run prebuildify
+          bun -Fnodejs-tree-sitter-highlight run prebuildify
       - uses: actions/upload-artifact@v5
         with:
           name: npm-prebuild-${{matrix.dest}}
@@ -82,7 +82,7 @@ jobs:
       - uses: astral-sh/setup-uv@v7
       - name: Build sdist
         run: |
-          uv build --package=tree-sitter-highlight --sdist
+          uv build --package=nodejs-tree-sitter-highlight --sdist
       - uses: actions/upload-artifact@v5
         if: "! startsWith(github.ref, 'refs/tags/')"
         with:
