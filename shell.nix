@@ -32,5 +32,10 @@ mkShell {
     ))
 
     hexo-cli
+
+    # pancat
+    pandoc
+    # texcat -> luaposix
+    libxcrypt
   ];
 }
