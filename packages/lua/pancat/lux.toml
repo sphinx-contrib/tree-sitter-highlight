@@ -12,7 +12,7 @@ license = "GPL-3.0"
 
 [source]
 url = "https://github.com/sphinx-contrib/tree-sitter-highlight/archive/$(VERSION).zip"
-dir = "tree-sitter-highlight-$(VERSION)/packages/$(PACKAGE)"
+dir = "tree-sitter-highlight-$(VERSION)/packages/lua/$(PACKAGE)"
 
 [dependencies]
 texcat = ">=0.3.16"
