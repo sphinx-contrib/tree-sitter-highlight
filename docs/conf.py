@@ -12,7 +12,8 @@ try:
 except ImportError:
     import tomli as tomllib
 
-sys.path.insert(1, "packages/sphinxcontrib-tree-sitter/src")
+package_dir = "packages/python/sphinxcontrib-tree-sitter"
+sys.path.insert(1, os.path.join(package_dir, "src"))
 
 # -- Path setup --------------------------------------------------------------
 
@@ -25,10 +26,7 @@ language = "en"
 copyright = "2026-" + str(datetime.now().year)
 
 PROJECT_FILE = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)),
-    "packages",
-    "sphinxcontrib-tree-sitter",
-    "pyproject.toml",
+    os.path.dirname(os.path.dirname(__file__)), package_dir, "pyproject.toml"
 )
 
 with open(PROJECT_FILE, "rb") as f:

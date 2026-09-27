@@ -19,7 +19,7 @@
     "test": "node test/test.js"
   },
   "dependencies": {
-    "nodejs-tree-sitter-highlight": "file:../../crates/nodejs-tree-sitter-highlight"
+    "nodejs-tree-sitter-highlight": "workspace:*"
   },
   "peerDependencies": {
     "markdown-it": "^13.0.0 || ^14.0.0"
