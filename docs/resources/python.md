@@ -1,2 +1,2 @@
-```{include} ../../crates/py-tree-sitter-highlight/README.md
+```{include} ../../packages/python/sphinxcontrib-tree-sitter/README.md
 ```

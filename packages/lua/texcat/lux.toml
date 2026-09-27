@@ -7,7 +7,7 @@ summary = "syntax highlight code in LaTeX"
 detailed = "A reimplementation of https://pygments.org/docs/formatters/#LatexFormatter by texlua"
 maintainer = "Wu"
 labels = ["tex"]
-homepage = "https://github.com/sphinx-contrib/tree-sitter-highlight"
+homepage = "https://tree-sitter-highlight.readthedocs.io/en/latest/resources/lua.html"
 license = "GPL-3.0"
 
 [source]
